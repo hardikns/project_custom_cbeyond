@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_hr_timesheet_users">
+            <field name="name">hr.analytical.timesheet.users.form</field>
+            <field name="model">hr.analytical.timesheet.users</field>
+            <field name="inherit_id" ref="hr_timesheet.view_hr_timesheet_users"/>
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//field[@name='employee_ids']"
+                    position="replace">
+                    <div>
+                        <field name="allemps" on_change="onchange_allemps(allemps)"/>
+                        <label for="allemps" string="Select All Employees"/>
+                        <field name='employee_ids' widget="many2many_tags"/>
+                    </div>
+                </xpath>
+                <xpath
+                    expr="//group[@string='Employees']"
+                    position="after">
+                    <group string="Download Data">
+                        <field name="csvfile"  filename="csv_filename"/>
+                    </group>
+                </xpath>
+                <xpath
+                    expr="/form/footer"
+                    position="replace">
+                    <footer>
+                        <button string="Generate CSV" name="download_report" type="object" class="oe_highlight"/> or
+                        <button string="Print" name="print_report" type="object" /> or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+
+                </xpath>                
+            </field>
+        </record> 
+        
+        <record id="action_hr_timesheet_users" model="ir.actions.act_window">
+            <field name="name">Employees Timesheet</field>
+            <field name="res_model">hr.analytical.timesheet.users</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="hr_timesheet.view_hr_timesheet_users"/>
+           <field name="target">new</field>
+        </record>
+                
+        <menuitem action="action_hr_timesheet_users"
+            id="hr_timesheet.menu_hr_timesheet_users"
+            parent="hr.menu_hr_reporting"
+            groups="base.group_hr_user" sequence="1" icon="STOCK_PRINT"/>
+        
+    </data>
+</openerp>

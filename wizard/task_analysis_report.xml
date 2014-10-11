@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_task_analysis_report">
+            <field name="name">task.analysis.report.form</field>
+            <field name="model">task.analysis.report</field>
+            <field name="arch" type="xml">
+                <form string="Task Analysis Report" version="7.0">
+                    <sheet>
+                        Click Generate CSV button and then click on the following link to download the file -- 
+                            <!--<field name='groupby'/>-->
+                            <field name="csvfile"  filename="csv_filename"/>
+                                                      
+                            <!--<field name='groupby_all' readonly='1' />    
+                            <button name='add_groupby' string='Add' type='object' />     -->
+                     </sheet>
+                     <footer>
+                            <!--<button name='clear_groupby' string='Clear All' type='object' /> --> 
+                            <button name='generate_report' string='Generate CSV' type='object' class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>        
+        
+       <menuitem id="project.menu_project_task_user_tree" sequence="5" action="project.action_project_task_user_tree" parent="base.menu_project_report"/>
+        
+       <act_window name="Tasks Analysis - CSV"
+            res_model="task.analysis.report"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="action_task_analysis_csv_show"/>       
+        
+        <menuitem id="menu_task_analysis_csv" parent="base.menu_project_report" 
+        action="action_task_analysis_csv_show" sequence="7" />
+        
+    </data>
+</openerp>

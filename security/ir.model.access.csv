@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+employee_access_task_history_cumulative,project.task.history employee,project.model_project_task_history_cumulative,base.group_user,1,0,0,0
+project.access_project_task_type_user,project.task.type employee,project.model_project_task_type,base.group_user,1,0,0,0
+project.access_project_task_type_admin,project.task.type Admin,project.model_project_task_type,base.group_system,1,1,1,1
+hr.access_hr_employee_user,hr.employee user,hr.model_hr_employee,base.group_hr_user,1,0,0,0
+access_hr_employee_mgr,hr.employee Mgr,hr.model_hr_employee,base.group_hr_manager,1,1,1,1

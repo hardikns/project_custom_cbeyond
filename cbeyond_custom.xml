@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <delete model="project.task.type" search="[('name','=','Analysis')]" />
+        <delete model="project.task.type" search="[('name','=','Specification')]" />
+        <delete model="project.task.type" search="[('name','=','Design')]" />
+        <delete model="project.task.type" search="[('name','=','Development')]" />
+        <delete model="project.task.type" search="[('name','=','Testing')]" />
+        <delete model="project.task.type" search="[('name','=','Merge')]" />
+        <record model="project.task.type" id="task_type_not_started">
+            <field name="name">Not Started</field>
+            <field name="case_default">True</field>
+            <field name="state">draft</field>
+            <field name="sequence">1</field>
+            <field name="fold" eval="False"/>
+        </record>
+        <record model="project.task.type" id="task_type_in_progress">
+            <field name="name">In Progress</field>
+            <field name="case_default">True</field>
+            <field name="state">open</field>
+            <field name="sequence">2</field>
+            <field name="fold" eval="False"/>
+        </record>
+        
+        <record model="ir.ui.view" id="view_edit_project_external_id">
+            <field name="name">project.project.edit.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//field[@name='partner_id']"
+                    position="replace">
+                    <field name="partner_id" on_change="onchange_partner_id(partner_id)" domain="[('customer','=',1)]"/>
+                    <field name="external_id"  />
+                    <field name="cpr_code" />
+                </xpath>
+            </field>
+        </record> 
+        
+        <record model="ir.ui.view" id="view_edit_project_phase_capfield">
+            <field name="name">project.phase.form</field>
+            <field name="model">project.phase</field>
+            <field name="inherit_id" ref="project_long_term.view_project_phase_form"/>
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//field[@name='project_id']"
+                    position="after">
+                    
+                    <field name="effort_capatilized"  />
+                </xpath>
+            </field>
+        </record> 
+
+        <record model="ir.ui.view" id="view_employee_form_inherit">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//field[@name='category_ids']"
+                    position="after">
+                    <group>
+                        <field name="ext_code" />
+                        <field name="emp_type" />  
+                    </group>
+                </xpath>
+                
+                <xpath
+                    expr="//field[@name='coach_id']" position="after">
+                    <field name="cost_center" />
+                </xpath>
+            </field>
+        </record> 
+        
+    </data>
+</openerp>
