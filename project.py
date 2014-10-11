@@ -24,13 +24,13 @@ class project(osv.Model):
     _inherit='project.project'
     
     _columns={
-        'external_id': fields.char("Cbeyond Project Id", size=40, 
+        'external_id': fields.char("External Project Id", size=40, 
                                    help="CWE Code in JIRA system", 
                                    required=True, readonly=True, 
                                    states={'template':[('required',False),('readonly',False)], 
                                            'open':[('required',True),('readonly',False)]}
                                    ),
-        'cpr_code': fields.char("CPR Code", size=40, help="CPR code", 
+        'cpr_code': fields.char("External Code", size=40, help="CPR code", 
                                 readonly=True, required=True, 
                                 states={'template':[('required',False),('readonly',False)], 
                                         'open':[('required',True),('readonly',False)]}
@@ -39,39 +39,6 @@ class project(osv.Model):
     _defaults = {
         'use_phases':True,
     }
-   
-    def map_tasks(self, cr, uid, old_project_id, new_project_id, context=None):
-        """ copy and map tasks from old to new project """
-        if context is None:
-            context = {}
-        map_task_id = {}
-        map_phase_id = {}
-        task_obj = self.pool.get('project.task')
-        phase_obj = self.pool.get('project.phase')
-        proj = self.browse(cr, uid, old_project_id, context=context)
-        for phase in proj.phase_ids:
-            map_phase_id[phase.id] = phase_obj.copy(cr, uid, phase.id, {'project_id':new_project_id,
-                                                                        'task_ids':[],
-                                                                        'name':phase.name}, 
-                                          context=context)
-        for task in proj.tasks:
-            map_task_id[task.id] =  task_obj.copy(cr, uid, task.id, 
-                                                  {'project_id':new_project_id, 
-                                                    'phase_id':map_phase_id[task.phase_id.id]}, 
-                                                  context=context)
-        task_obj.duplicate_task(cr, uid, map_task_id, context=context)
-        return True
-
-    def copy(self, cr, uid, ids, default=None, context=None):
-        if context is None:
-            context = {}
-        if default is None:
-            default = {}
-        default['phase_ids'] = []    
-        res = super(project, self).copy(cr, uid, ids, default, context)
-        return res
-        
-
 project()
 
 class project_phase(osv.Model):
